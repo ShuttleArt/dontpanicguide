@@ -34,7 +34,6 @@ async function getStats() {
     return { total: totalLaunched, inOrbit, decayed }
   } catch (e) {
     console.error('Starlink fetch failed → using static numbers')
-    // Nov 22, 2025 real numbers
     return { total: 10406, inOrbit: 10382, decayed: 24 }
   }
 }
@@ -57,4 +56,24 @@ export default async function StarlinkPage() {
           <div className="text-xl md:text-2xl text-white/90">Total Launched</div>
         </div>
 
-        <div className="bg-zinc-900/70 border
+        <div className="bg-zinc-900/70 border-2 border-green-900 rounded-3xl p-12 min-h-[220px] flex flex-col justify-center">
+          <div className="text-5xl md:text-7xl lg:text-8xl font-bold text-green-500 leading-tight mb-2">
+            {inOrbit.toLocaleString()}
+          </div>
+          <div className="text-xl md:text-2xl text-white/90">In Orbit</div>
+        </div>
+
+        <div className="bg-zinc-900/70 border-2 border-gray-700 rounded-3xl p-12 min-h-[220px] flex flex-col justify-center">
+          <div className="text-5xl md:text-7xl lg:text-8xl font-bold text-white/90 leading-tight mb-2">
+            {decayed.toLocaleString()}
+          </div>
+          <div className="text-xl md:text-2xl text-white/90">Deorbited / Failed</div>
+        </div>
+      </div>
+
+      <p className="text-lg text-gray-400 mt-8">
+        Latest batch: 29 satellites (Nov 22, 2025)
+      </p>
+    </div>
+  )
+}
