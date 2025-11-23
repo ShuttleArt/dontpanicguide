@@ -35,7 +35,7 @@ export default function RootLayout({
 <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-red-900/50">
   <div className="max-w-6xl mx-auto px-6 py-5">
     <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-lg font-medium">
-      {['Home','History','Rockets','Missions','Starlink','Capsules','Quizzes'].map((item)=>(
+      {['Home','Rockets','Missions','Starlink','Assets','Quizzes'].map((item)=>(
         <Link key={item} href={item==='Home'?'/':`/${item.toLowerCase()}`}
           className="text-white hover:text-red-400 transition duration-300 hover:scale-110">
           {item}
