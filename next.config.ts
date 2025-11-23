@@ -1,13 +1,9 @@
+// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
+      // SpaceX official Flickr (rockets, assets, etc.)
       {
         protocol: 'https',
         hostname: 'live.staticflickr.com',
@@ -20,9 +16,23 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Grok-generated images (assets page, satellites, etc.)
       {
         protocol: 'https',
         hostname: 'i.imgur.com',
+        port: '',
+        pathname: '/**',
+      },
+      // Fallback / older sources (just in case)
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
         port: '',
         pathname: '/**',
       },
