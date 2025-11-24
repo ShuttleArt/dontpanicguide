@@ -1,5 +1,4 @@
-import Image from 'next/image'
-
+// src/app/rockets/page.tsx
 export const revalidate = 86400
 
 const rockets = [
@@ -68,12 +67,11 @@ export default function RocketsPage() {
             >
               <div className="grid md:grid-cols-2">
                 <div className="relative h-96 md:h-full overflow-hidden">
-                  <Image
+                  <img
                     src={rocket.image}
                     alt={`${rocket.name} rocket`}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-6 left-6 right-6">
