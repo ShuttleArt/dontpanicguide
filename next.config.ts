@@ -27,8 +27,8 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    // Force no cache for images in dev (helps local testing)
-    ...(process.env.NODE_ENV === 'development' && { images: { unoptimized: true } }),
+    // Force unoptimized for Wikimedia thumbs (fixes edge bugs)
+    unoptimized: true,
   },
 }
 
