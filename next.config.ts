@@ -1,17 +1,16 @@
-// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.imgur.com',
+        hostname: 'upload.wikimedia.org',
         port: '',
-        pathname: '/**',
+        pathname: '/**',  // Covers /wikipedia/commons/thumb + everything
       },
       {
         protocol: 'https',
-        hostname: 'imgur.com',
+        hostname: 'i.imgur.com',
         port: '',
         pathname: '/**',
       },
@@ -23,11 +22,13 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'upload.wikimedia.org',
+        hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
+    // Force no cache for images in dev (helps local testing)
+    ...(process.env.NODE_ENV === 'development' && { images: { unoptimized: true } }),
   },
 }
 
