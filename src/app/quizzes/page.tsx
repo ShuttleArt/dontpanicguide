@@ -3,7 +3,6 @@
 import { useState } from 'react'
 
 const quiz = [
-  { q: "The Answer to Life, the Universe, and Everything?", o: ["42", "69", "420", "9000"], a: 0 },
   { q: "Which rocket family can land boosters?", o: ["Falcon 9", "Atlas V", "Ariane 5", "SLS"], a: 0 },
   { q: "How many Raptor engines on Super Heavy booster (2025)?", o: ["31", "33", "35", "39"], a: 1 },
   { q: "First orbital rocket to be reused?", o: ["Falcon 9", "Space Shuttle", "Starship", "Electron"], a: 0 },
@@ -52,8 +51,9 @@ const quiz = [
   { q: "What is the diameter of Starship?", o: ["7 m", "9 m", "12 m", "15 m"], a: 1 },
   { q: "What is the famous “How hard can it be?” tweet about?", o: ["Reusability", "Electric cars", "Tunnels", "All of them"], a: 0 },
   { q: "Current record for fastest booster turnaround?", o: ["< 1 month", "21 days", "9 days", "3 days"], a: 2 },
-  { q: "What is the ultimate goal of SpaceX?", o: ["Make life multiplanetary", "Sell satellites", "Win NASA contracts", "Beat Blue Origin"], a: 0 }
-]
+  { q: "What is the ultimate goal of SpaceX?", o: ["Make life multiplanetary", "Sell satellites", "Win NASA contracts", "Beat Blue Origin"], a: 0 },
+  { q: "The Answer to Life, the Universe, and Everything?", o: ["42", "69", "420", "9000"], a: 0 }   
+    ]
 
 export default function QuizPage() {
   const [i, setI] = useState(0)

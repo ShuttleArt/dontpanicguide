@@ -4,7 +4,7 @@ export const revalidate = 86400
 const rockets = [
   {
     name: 'Falcon 1',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Falcon_1_Flight_1_launch.jpg/800px-Falcon_1_Flight_1_launch.jpg',
+    image: '/images/falcon1.jpg',
     status: 'Retired (2006–2009)',
     height: '21.3 m',
     payloadLEO: '670 kg',
@@ -16,7 +16,7 @@ const rockets = [
   },
   {
     name: 'Falcon 9 Block 5',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Falcon_9_v1.2_Block_5_launch_%28cropped%29.jpg/800px-Falcon_9_v1.2_Block_5_launch_%28cropped%29.jpg',
+    image: '/images/falcon9.jpg',
     status: 'Active · 500+ flights',
     height: '70 m',
     payloadLEO: '22,800 kg',
@@ -28,7 +28,7 @@ const rockets = [
   },
   {
     name: 'Falcon Heavy',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Falcon_Heavy_Demo_Mission_%281%29_%28cropped%29.jpg/800px-Falcon_Heavy_Demo_Mission_%281%29_%28cropped%29.jpg',
+    image: '/images/falconheavy.jpg',
     status: 'Active · Most powerful operational rocket',
     height: '70 m',
     payloadLEO: '63,800 kg',
@@ -40,7 +40,7 @@ const rockets = [
   },
   {
     name: 'Starship + Super Heavy',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Starship_SN15_flight_14_May_2021_%28resized_cropped%29.jpg/800px-Starship_SN15_flight_14_May_2021_%28resized_cropped%29.jpg',
+    image: '/images/starship.jpg',
     status: 'In Development · IFT-7 soon',
     height: '121 m',
     payloadLEO: '150+ t reusable',
