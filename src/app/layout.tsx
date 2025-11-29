@@ -35,7 +35,7 @@ export default function RootLayout({
 <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-red-900/50">
   <div className="max-w-6xl mx-auto px-6 py-5">
     <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-lg font-medium">
-      {['Home','Rockets','Missions','Starlink','Assets','Quizzes'].map((item)=>(
+      {['Home','Rockets','Missions','Starlink','Core','Quiz'].map((item)=>(
         <Link key={item} href={item==='Home'?'/':`/${item.toLowerCase()}`}
           className="text-white hover:text-red-400 transition duration-300 hover:scale-110">
           {item}
@@ -52,7 +52,7 @@ export default function RootLayout({
 
         {/* FOOTER */}
         <footer className="bg-zinc-950 py-12 text-center text-sm opacity-60 mt-20">
-          <p>Built by an indie hacker • Data from api.spacexdata.com • {new Date().getFullYear()}</p>
+          <p>Indie craft • Data from api.spacexdata.com • {new Date().getFullYear()}</p>
         </footer>
       </body>
     </html>

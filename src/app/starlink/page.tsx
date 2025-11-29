@@ -1,5 +1,5 @@
 // src/app/starlink/page.tsx
-export const revalidate = 3600
+export const revalidate = 86400
 
 async function getStats() {
   try {
@@ -47,25 +47,10 @@ export default async function StarlinkPage() {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-6xl md:text-8xl font-bold mb-4">Starlink Constellation</h1>
-          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated hourly</p>
+          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated daily</p>
         </div>
 
-        {/* MAIN STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-red-900/20 to-zinc-900 border border-red-800/50 rounded-3xl p-12 text-center hover:border-red-600 transition">
-            <div className="text-7xl md:text-8xl font-black text-red-500">{formatDE(total)}</div>
-            <p className="mt-6 text-2xl font-medium text-gray-300">Total Launched</p>
-          </div>
-          <div className="bg-gradient-to-br from-green-900/20 to-zinc-900 border border-green-800/50 rounded-3xl p-12 text-center hover:border-green-600 transition">
-            <div className="text-7xl md:text-8xl font-black text-green-500">{formatDE(inOrbit)}</div>
-            <p className="mt-6 text-2xl font-medium text-gray-300">In Orbit</p>
-          </div>
-          <div className="bg-gradient-to-br from-gray-700/20 to-zinc-900 border border-gray-700/50 rounded-3xl p-12 text-center hover:border-gray-500 transition">
-            <div className="text-7xl md:text-8xl font-black text-gray-400">{formatDE(decayed)}</div>
-            <p className="mt-6 text-2xl font-medium text-gray-300">Deorbited / Failed</p>
-          </div>
-        </div>
-
+        
         {/* PER-VERSION COUNTERS – FIXED SIZE & COMMA */}
         <div className="mb-24">
           <h2 className="text-center text-4xl md:text-6xl font-bold mb-12 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">

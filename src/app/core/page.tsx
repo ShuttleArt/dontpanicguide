@@ -1,7 +1,7 @@
-// src/app/assets/page.tsx
+// src/app/core/page.tsx
 export const revalidate = 86400
 
-const assets = [
+const core = [
   {
     category: 'Launch Bases',
     items: [
@@ -72,7 +72,7 @@ const assets = [
     ],
   },
   {
-    category: 'Starship Prototypes (Active)',
+    category: 'Starship Prototypes',
     items: [
       {
         name: 'Ship 33 + Booster 15',
@@ -96,18 +96,18 @@ const assets = [
   },
 ]
 
-export default function AssetsPage() {
+export default function CorePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white py-20 px-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-6xl md:text-8xl font-bold text-center mb-6 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-          SpaceX Assets
+          SpaceX Core
         </h1>
         <p className="text-xl md:text-2xl text-gray-400 text-center mb-20">
           Launch pads, droneships, capsules, and the future of spaceflight
         </p>
 
-        {assets.map((section) => (
+        {core.map((section) => (
           <div key={section.category} className="mb-32">
             <h2 className="text-4xl md:text-6xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
               {section.category}
