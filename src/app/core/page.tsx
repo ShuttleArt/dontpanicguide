@@ -61,7 +61,7 @@ const core = [
         name: 'Crew Dragon (C206–C212)',
         image: '/images/crewdragon.jpg',
         specs: '4–7 crew | 8.1m tall | SuperDraco abort (8 engines) | 210 days docked | PICA-X heat shield | Ocean splashdown',
-        note: 'NASA Commercial Crew – 13+ crewed flights by 2025',
+        note: 'NASA Commercial Crew – 12+ crewed flights by 2025',
       },
       {
         name: 'Cargo Dragon 2',

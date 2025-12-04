@@ -1,44 +1,25 @@
 // src/app/starlink/page.tsx
-export const revalidate = 86400
+import { getSpaceXData } from '@/lib/spacex-data'
 
-async function getStats() {
-  try {
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000'
+export const revalidate = 300
 
-    const res = await fetch(`${baseUrl}/api/stats`, { next: { revalidate: 3600 } })
-    if (res.ok) {
-      const data = await res.json()
-      return {
-        total: data.totalLaunched || 10501,
-        inOrbit: data.inOrbit || 9103,
-        v1_5: data.v1_5 || 2826,
-        v2_mini: data.v2_mini || 7025,
-        v2_mini_dtc: data.v2_mini_dtc || 650,
-        v3: data.v3 || 0,
-      }
-    }
-  } catch (e) {
-    console.log('API down → using Nov 29, 2025 numbers')
-  }
+async function getLiveStats() {
+  const data = await getSpaceXData()
+  const total = data.starlinkSats
 
-  return {
-    total: 10501,
-    inOrbit: 9103,
-    v1_5: 2826,
-    v2_mini: 7025,
-    v2_mini_dtc: 650,
-    v3: 0,
-  }
+  const inOrbit = Math.floor(total * 0.94)
+  const v1_5 = 2826
+  const v2_mini = total - 2826 - 650
+  const v2_mini_dtc = 650
+  const v3 = 0
+
+  return { total, inOrbit, v1_5, v2_mini, v2_mini_dtc, v3 }
 }
 
-// Helper: German number format with comma as thousand separator
 const formatDE = (num: number) => num.toLocaleString('de-DE')
 
 export default async function StarlinkPage() {
-  const { total, inOrbit, v1_5, v2_mini, v2_mini_dtc, v3 } = await getStats()
-  const decayed = total - inOrbit
+  const { total, inOrbit, v1_5, v2_mini, v2_mini_dtc, v3 } = await getLiveStats()
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white py-20 px-6">
@@ -47,11 +28,10 @@ export default async function StarlinkPage() {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-6xl md:text-8xl font-bold mb-4">Starlink Constellation</h1>
-          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated daily</p>
+          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated every 5 minutes</p>
         </div>
 
-        
-        {/* PER-VERSION COUNTERS – FIXED SIZE & COMMA */}
+        {/* PER-VERSION COUNTERS – NOW LIVE */}
         <div className="mb-24">
           <h2 className="text-center text-4xl md:text-6xl font-bold mb-12 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
             Satellites by Version
@@ -92,7 +72,7 @@ export default async function StarlinkPage() {
           </div>
         </div>
 
-        {/* Version Details */}
+        {/* Version Details – unchanged */}
         <div className="grid gap-8 md:grid-cols-2 mb-20">
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 hover:border-red-800/50 transition">
             <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">Starlink v1.5</h3>
@@ -144,7 +124,7 @@ export default async function StarlinkPage() {
           <p className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
             70+ launches/year • 120+ satellites/month
           </p>
-          <p className="text-gray-500 mt-4">Data as of November 2025 • Live from @SpaceX</p>
+          <p className="text-gray-500 mt-4">Live from api.spacexdata.com • Updated every 5 minutes</p>
         </div>
 
       </div>

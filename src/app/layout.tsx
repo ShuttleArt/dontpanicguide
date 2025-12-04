@@ -1,8 +1,8 @@
-// app/layout.tsx
+// src/app/layout.tsx
 import './globals.css'
 import { Luckiest_Guy } from 'next/font/google'
 import Link from 'next/link'
-import '@fontsource/luckiest-guy'   // ← this line makes the font work
+import KonamiListener from './KonamiListener' // ← new file
 
 const luckiest = Luckiest_Guy({ weight: '400', subsets: ['latin'] })
 
@@ -19,40 +19,48 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white min-h-screen">
-        {/* BIG DON'T PANIC HEADER — now super bright */}
-<header className="relative overflow-hidden bg-gradient-to-b from-zinc-900 to-black py-20 md:py-32">
-  <div className="relative max-w-6xl mx-auto px-6 text-center">
-    <h1 className={`${luckiest.className} text-7xl md:text-9xl lg:text-[180px] leading-none tracking-tighter text-white drop-shadow-2xl`}>
-      DON&apos;T PANIC
-    </h1>
-    <p className="mt-6 text-xl md:text-3xl text-white/95 font-light tracking-wide">
-      The Ultimate SpaceX Resource – In Large, Friendly Letters
-    </p>
-  </div>
-</header>
+        {/* Konami Easter Egg – now in its own Client Component */}
+        <KonamiListener />
 
-        {/* STICKY MENU — now bright white + red hover */}
-<nav className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-red-900/50">
-  <div className="max-w-6xl mx-auto px-6 py-5">
-    <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-lg font-medium">
-      {['Home','Rockets','Missions','Starlink','Core','Quiz'].map((item)=>(
-        <Link key={item} href={item==='Home'?'/':`/${item.toLowerCase()}`}
-          className="text-white hover:text-red-400 transition duration-300 hover:scale-110">
-          {item}
-        </Link>
-      ))}
-    </div>
-  </div>
-</nav>
+        {/* HEADER */}
+        <header className="relative overflow-hidden bg-gradient-to-b from-zinc-900 to-black py-20 md:py-32">
+          <div className="relative max-w-6xl mx-auto px-6 text-center">
+            <h1 className={`${luckiest.className} text-7xl md:text-9xl lg:text-[180px] leading-none tracking-tighter text-white drop-shadow-2xl`}>
+              DON&apos;T PANIC
+            </h1>
+            <p className="mt-6 text-xl md:text-3xl text-white/95 font-light tracking-wide">
+              The Ultimate SpaceX Resource – In Large, Friendly Letters
+            </p>
+          </div>
+        </header>
 
-        {/* PAGE CONTENT GOES HERE */}
+        {/* NAV */}
+        <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-red-900/50">
+          <div className="max-w-6xl mx-auto px-6 py-5">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-lg font-medium">
+              {['Home', 'Rockets', 'Missions', 'Starlink', 'Core', 'Quiz'].map((item) => (
+                <Link
+                  key={item}
+                  href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                  className="text-white hover:text-red-400 transition duration-300 hover:scale-110"
+                >
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </nav>
+
         <main className="max-w-6xl mx-auto px-6 py-12">
           {children}
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-zinc-950 py-12 text-center text-sm opacity-60 mt-20">
-          <p>Indie craft • Data from api.spacexdata.com • {new Date().getFullYear()}</p>
+        <footer className="bg-zinc-950 py-12 text-center text-sm opacity-60 mt-20 border-t border-zinc-800">
+          <p>
+            Indie craft • Data from api.spacexdata.com • {new Date().getFullYear()} •{' '}
+            <span className="text-red-500">↑ ↑ ↓ ↓ ← → ← → B A</span>
+          </p>
         </footer>
       </body>
     </html>
