@@ -4,48 +4,67 @@ import { getSpaceXData } from '@/lib/spacex-data'
 
 export const revalidate = 300
 
+// Starship projections (unchanged)
+const starshipProjections: Record<number, number> = {
+  2026: 5000, 2027: 15000, 2028: 30000, 2029: 50000,
+  2030: 100000, 2031: 180000, 2032: 280000, 2033: 400000,
+  2034: 550000, 2035: 750000, 2040: 2000000, 2050: 10000000,
+}
+
 export default async function Home() {
   const data = await getSpaceXData()
   const { nextLaunch, totalLaunches, starlinkSats, allLaunches } = data
 
-  // === REAL LAUNCHES PER YEAR (2008 → forever) ===
+  // ─────────────────────── REAL DATA FOREVER ───────────────────────
   const launchesByYear: Record<number, number> = {}
+  const payloadByYear: Record<number, number> = {}   // ← THIS WAS MISSING
+
   allLaunches.forEach((launch: any) => {
     if (!launch.date_utc) return
     const year = new Date(launch.date_utc).getFullYear()
+
     launchesByYear[year] = (launchesByYear[year] || 0) + 1
+
+    const massKg = launch.payloads?.reduce((sum: number, p: any) => {
+      if (!p?.mass_kg && launch.name.toLowerCase().includes('starlink')) {
+        return sum + (launch.name.includes('v2') ? 850 : 307)
+      }
+      return sum + (p?.mass_kg || 0)
+    }, 0) || 0
+
+    payloadByYear[year] = (payloadByYear[year] || 0) + massKg / 1000
   })
 
-  // Generate years: 2008 → current + 5 future
   const currentYear = new Date().getFullYear()
-  const allYears: number[] = []
-  for (let y = 2008; y <= currentYear + 5; y++) allYears.push(y)
+  const displayYears: number[] = []
+  for (let y = 2008; y <= currentYear + 5; y++) displayYears.push(y)
 
   const maxLaunches = Math.max(...Object.values(launchesByYear), 200)
+  const maxPayload   = Math.max(...Object.values(payloadByYear), 10000)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white">
 
-      {/* LAUNCHES PER YEAR – GROWS FOREVER */}
-      <section className="py-8 px-6">
+      {/* 1. LAUNCHES PER YEAR – GROWS FOREVER */}
+      <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+          <h2 className="text-center text-4xl md:text-6xl font-bold mb-12 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
             Launches per Year
           </h2>
-          <div className="space-y-2">
-            {allYears.map(year => (
-              <div key={year} className="flex items-center gap-4">
-                <div className="w-14 text-right text-lg font-bold text-gray-500">
-                  {year === currentYear && <span className="text-green-400 animate-pulse">LIVE</span>}
+          <div className="space-y-3">
+            {displayYears.map(year => (
+              <div key={year} className="flex items-center gap-5">
+                <div className="w-16 text-right text-xl font-bold text-gray-400">
+                  {year === currentYear && <span className="text-green-400 animate-pulse text-sm">LIVE </span>}
                   {year}
                 </div>
-                <div className="flex-1 relative h-10 bg-zinc-900/70 rounded overflow-hidden border border-zinc-800">
+                <div className="flex-1 relative h-12 bg-zinc-900/70 rounded-xl overflow-hidden border border-zinc-800">
                   <div
-                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-red-600 to-red-500 transition-all duration-1000"
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-red-600 to-orange-500 transition-all duration-1000"
                     style={{ width: `${((launchesByYear[year] || 0) / maxLaunches) * 100}%` }}
                   />
-                  <div className="absolute inset-0 flex items-center justify-end pr-4">
-                    <span className="text-xl font-black text-white drop-shadow-sm">
+                  <div className="absolute inset-0 flex items-center justify-end pr-6">
+                    <span className="text-2xl font-black text-white drop-shadow-lg">
                       {launchesByYear[year] || 0}
                     </span>
                   </div>
@@ -56,29 +75,29 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* PAYLOAD TO ORBIT – GROWS FOREVER */}
-      <section className="py-8 px-6 bg-zinc-950/30">
+      {/* 2. PAYLOAD TO ORBIT – GROWS FOREVER (now fixed) */}
+      <section className="py-12 px-6 bg-zinc-950/40">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+          <h2 className="text-center text-4xl md:text-6xl font-bold mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Payload to Orbit (tons/year)
           </h2>
-          <div className="space-y-2">
-            {allYears.map(year => {
-              const payload = Math.round(realPayloadByYear[year] || 0)
+          <div className="space-y-3">
+            {displayYears.map(year => {
+              const tons = Math.round(payloadByYear[year] || 0)
               return (
-                <div key={year} className="flex items-center gap-4">
-                  <div className="w-14 text-right text-lg font-bold text-gray-500">
-                    {year === currentYear && <span className="text-green-400 animate-pulse">LIVE</span>}
+                <div key={year} className="flex items-center gap-5">
+                  <div className="w-16 text-right text-xl font-bold text-gray-400">
+                    {year === currentYear && <span className="text-green-400 animate-pulse text-sm">LIVE </span>}
                     {year}
                   </div>
-                  <div className="flex-1 relative h-10 bg-zinc-900/70 rounded overflow-hidden border border-zinc-800">
+                  <div className="flex-1 relative h-12 bg-zinc-900/70 rounded-xl overflow-hidden border border-zinc-800">
                     <div
-                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-600 to-blue-500 transition-all duration-1000"
-                      style={{ width: `${(payload / maxPayload) * 100}%` }}
+                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-1000"
+                      style={{ width: `${(tons / maxPayload) * 100}%` }}
                     />
-                    <div className="absolute inset-0 flex items-center justify-end pr-4">
-                      <span className="text-xl font-black text-white drop-shadow-sm">
-                        {payload >= 1000 ? `${(payload / 1000).toFixed(1)}k` : payload}
+                    <div className="absolute inset-0 flex items-center justify-end pr-6">
+                      <span className="text-2xl font-black text-white drop-shadow-lg">
+                        {tons >= 1000 ? `${(tons / 1000).toFixed(1)}k` : tons}
                       </span>
                     </div>
                   </div>
