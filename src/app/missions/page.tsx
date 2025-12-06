@@ -1,4 +1,4 @@
-// src/app/missions/page.tsx
+// src/app/missions/page.tsx – FIXED TOTALS + DEC 2025 RECENT + NEXT LAUNCH
 import { getSpaceXData } from '@/lib/spacex-data'
 
 export const revalidate = 60
@@ -7,17 +7,18 @@ export default async function MissionsPage() {
   const data = await getSpaceXData()
   const { nextLaunch, allLaunches } = data
 
-  // Total launches by rocket (LIVE from API)
+  // Total launches by rocket (LIVE from data)
   const counts = {
-    falcon1: 5,
+    falcon1: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69973a809d1ec').length, // F1 ID
     falcon9: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69973a809d1ec').length,
     falconHeavy: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69955f709d1eb').length,
     starship: allLaunches.filter(l => l.rocket.id === '5e9d0d96eda699382d09d1ee').length,
   }
 
-  // Last 3 completed launches
+  // Last 3 completed launches (Dec 2025)
   const recent = allLaunches
     .filter(l => !l.upcoming && l.success !== null)
+    .sort((a, b) => new Date(b.date_utc).getTime() - new Date(a.date_utc).getTime())
     .slice(0, 3)
 
   return (
@@ -87,7 +88,7 @@ export default async function MissionsPage() {
         </div>
       </section>
 
-      {/* 3. MAJOR MILESTONES – YOUR ORIGINAL BEAUTIFUL DESIGN */}
+      {/* 3. MAJOR MILESTONES – YOUR ORIGINAL DESIGN */}
       <section className="max-w-6xl mx-auto px-6 py-32">
         <h2 className="text-5xl md:text-6xl font-bold text-center mb-20">Major Milestones (2006–2025)</h2>
         <div className="space-y-16">

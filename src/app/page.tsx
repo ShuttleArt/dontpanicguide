@@ -46,7 +46,7 @@ export default async function Home() {
 
   const currentYear = new Date().getFullYear()
   const displayYears: number[] = []
-  for (let y = 2008; y <= currentYear + 5; y++) displayYears.push(y)
+ for (let y = 2008; y <= currentYear; y++) displayYears.push(y) // ← ONLY until current year
 
   const maxLaunches = Math.max(...Object.values(launchesByYear), 200)
   const maxPayload = Math.max(...Object.values(payloadByYear), 10000)

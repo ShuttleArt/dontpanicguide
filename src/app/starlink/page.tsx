@@ -1,15 +1,17 @@
-// src/app/starlink/page.tsx
+// src/app/starlink/page.tsx – ORIGINAL DESIGN + DESCRIPTIONS + NO ERRORS
+import Link from 'next/link' // ← THIS WAS MISSING
 import { getSpaceXData } from '@/lib/spacex-data'
 
-export const revalidate = 300
+export const revalidate = 60
 
 async function getLiveStats() {
   const data = await getSpaceXData()
-  const total = data.starlinkSats
+  const { starlinkSats } = data
 
+  const total = starlinkSats
   const inOrbit = Math.floor(total * 0.94)
   const v1_5 = 2826
-  const v2_mini = total - 2826 - 650
+  const v2_mini = Math.max(0, total - 2826 - 650) // Positive
   const v2_mini_dtc = 650
   const v3 = 0
 
@@ -28,10 +30,10 @@ export default async function StarlinkPage() {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-6xl md:text-8xl font-bold mb-4">Starlink Constellation</h1>
-          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated every 5 minutes</p>
+          <p className="text-xl md:text-2xl text-gray-400">Live data • Updated daily</p>
         </div>
 
-        {/* PER-VERSION COUNTERS – NOW LIVE */}
+        {/* PER-VERSION COUNTERS – ORIGINAL DESIGN */}
         <div className="mb-24">
           <h2 className="text-center text-4xl md:text-6xl font-bold mb-12 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
             Satellites by Version
@@ -72,7 +74,7 @@ export default async function StarlinkPage() {
           </div>
         </div>
 
-        {/* Version Details – unchanged */}
+        {/* Version Details – ORIGINAL */}
         <div className="grid gap-8 md:grid-cols-2 mb-20">
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 hover:border-red-800/50 transition">
             <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">Starlink v1.5</h3>
@@ -96,7 +98,7 @@ export default async function StarlinkPage() {
           </div>
         </div>
 
-        {/* LIVE MAP */}
+        {/* LIVE MAP – ORIGINAL */}
         <div className="mt-32 mb-20">
           <h2 className="text-4xl md:text-6xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
             Live Starlink Constellation
