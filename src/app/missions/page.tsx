@@ -7,15 +7,15 @@ export default async function MissionsPage() {
   const data = await getSpaceXData()
   const { nextLaunch, allLaunches } = data
 
-  // Total launches by rocket (LIVE from data)
+  // Total launches by rocket (LIVE from data – fixed filters on name, not ID)
   const counts = {
-    falcon1: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69973a809d1ec').length, // F1 ID
-    falcon9: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69973a809d1ec').length,
-    falconHeavy: allLaunches.filter(l => l.rocket.id === '5e9d0d95eda69955f709d1eb').length,
-    starship: allLaunches.filter(l => l.rocket.id === '5e9d0d96eda699382d09d1ee').length,
+    falcon1: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon 1')).length,
+    falcon9: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon 9') && !l.rocket.name?.toLowerCase().includes('heavy')).length,
+    falconHeavy: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon heavy')).length,
+    starship: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('starship')).length,
   }
 
-  // Last 3 completed launches (Dec 2025)
+  // Last 3 completed launches (Dec 2025 – fixed sort on dates)
   const recent = allLaunches
     .filter(l => !l.upcoming && l.success !== null)
     .sort((a, b) => new Date(b.date_utc).getTime() - new Date(a.date_utc).getTime())
@@ -54,7 +54,7 @@ export default async function MissionsPage() {
         <p className="text-center text-green-400 mt-10 animate-pulse">Live • Updated every 5 minutes</p>
       </section>
 
-      {/* 2. NEXT LAUNCH + LAST 3 RECENT – LIVE */}
+      {/* 2. NEXT LAUNCH  – LIVE */}
       <section className="relative py-32 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-red-900/20 via-transparent to-transparent" />
         <div className="relative max-w-5xl mx-auto text-center">
@@ -69,22 +69,6 @@ export default async function MissionsPage() {
             className="inline-block bg-red-600 hover:bg-red-500 px-16 py-6 rounded-full text-2xl font-bold transition-all hover:scale-105 shadow-2xl">
             Watch Live
           </a>
-        </div>
-      </section>
-
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Recent Launches</h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          {recent.map((l) => (
-            <div key={l.id} className="group bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 hover:border-red-800/50 transition-all">
-              <h3 className="text-2xl font-bold mb-2 group-hover:text-red-400">{l.name}</h3>
-              <p className="text-gray-400 mb-3">{new Date(l.date_utc).toLocaleDateString()}</p>
-              <div className="flex justify-between">
-                <span className="bg-zinc-800 px-4 py-1 rounded-full text-sm">{l.rocket.name || 'SpaceX'}</span>
-                <span className="text-green-400 text-sm">{l.success ? 'Success' : 'Failure'}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -120,7 +104,7 @@ export default async function MissionsPage() {
       </section>
 
       <footer className="text-center py-16 text-gray-500">
-        Live from api.spacexdata.com • Updated every 5 minutes • Don't Panic.
+        Live from api.spacexdata.com • Updated daily • Don't Panic.
       </footer>
     </div>
   )

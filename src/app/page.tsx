@@ -1,4 +1,4 @@
-// src/app/page.tsx
+// src/app/page.tsx – FIXED & CLEAN (no parsing errors)
 import Link from 'next/link'
 import { getSpaceXData } from '@/lib/spacex-data'
 
@@ -46,7 +46,7 @@ export default async function Home() {
 
   const currentYear = new Date().getFullYear()
   const displayYears: number[] = []
- for (let y = 2008; y <= currentYear; y++) displayYears.push(y) // ← ONLY until current year
+  for (let y = 2008; y <= currentYear; y++) displayYears.push(y)
 
   const maxLaunches = Math.max(...Object.values(launchesByYear), 200)
   const maxPayload = Math.max(...Object.values(payloadByYear), 10000)
@@ -121,7 +121,7 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="text-center bg-gradient-to-br from-red-900/20 to-zinc-900 border border-red-800/40 rounded-3xl p-10 hover:border-red-600 transition group">
-            <div className="text-6xl md:text-7xl font-black text-red-500">{starlinkSats.toLocaleString()}</div>
+            <div className="text-6xl md:text-7xl font-black text-red-500">{starlinkSats}</div>
             <p className="mt-4 text-lg text-gray-300">Starlink Launched</p>
           </div>
           <div className="text-center bg-gradient-to-br from-cyan-900/20 to-zinc-900 border border-cyan-800/40 rounded-3xl p-10 hover:border-cyan-600 transition">
@@ -145,14 +145,14 @@ export default async function Home() {
           So long, and thanks for all the launches
         </h2>
         <Link href="/missions" className="inline-block bg-red-600 hover:bg-red-500 px-12 py-4 rounded-full text-2xl font-bold transition hover:scale-105 shadow-2xl">
-          Explore Missions →
+          Explore Missions
         </Link>
       </div>
 
       {/* PROYECCIONES STARSHIP */}
-      <section className="py-24 px-6 bg-gradient-to-b from-zinc-950 via-purple-950/20 to-black">
+      <section className="py-12 px-6 bg-gradient-to-b from-zinc-950 via-purple-950/20 to-black">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-5xl md:text-8xl font-black mb-20 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+          <h2 className="text-center text-5xl md:text-6xl font-black mb-12 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
             Starship Era<br />Projected Payload to Orbit
           </h2>
           <div className="space-y-6 max-w-5xl mx-auto">
@@ -179,16 +179,11 @@ export default async function Home() {
               )
             })}
           </div>
-          <p className="text-center text-gray-400 mt-16 text-xl max-w-4xl mx-auto">
-            When Starship reaches fleet scale — hundreds to thousands of launches per year —
-            humanity will send <strong>millions of tons</strong> to orbit annually.<br />
-            Mars stops being science fiction.
-          </p>
         </div>
       </section>
 
       <footer className="text-center py-12 text-gray-500 border-t border-zinc-800">
-        Live from api.spacexdata.com • Real data + realistic projections • Built to last forever • Don’t Panic.
+        Live from api.spacexdata.com • Real data + projections • Built with love for the future • Don’t Panic.
       </footer>
     </div>
   )
