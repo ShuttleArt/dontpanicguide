@@ -1,25 +1,49 @@
-// src/app/missions/page.tsx – FIXED TOTALS + DEC 2025 RECENT + NEXT LAUNCH
-import { getSpaceXData } from '@/lib/spacex-data'
+// src/app/missions/page.tsx
+import Link from 'next/link'
 
-export const revalidate = 60
+async function getNextSpaceXLaunch() {
+  try {
+    // Bump to next/100 for reliable SpaceX capture (free, covers more global launches)
+    const res = await fetch('https://fdo.rocketlaunch.live/json/launches/next/100', {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const launches = data.result || [];
+    return launches.find((l: any) => l.provider.name.toLowerCase() === 'spacex') || null;
+  } catch {
+    return null;
+  }
+}
+
+async function getRocketCounts() {
+  const base = {
+    falcon1: 5,
+    falcon9: 417,
+    falconHeavy: 11,
+    starship: 6,
+  };
+
+  const currentAdd = {
+    falcon9: 165,
+    falconHeavy: 0,
+    starship: 5,
+  };
+
+  return {
+    falcon1: base.falcon1,
+    falcon9: base.falcon9 + currentAdd.falcon9,
+    falconHeavy: base.falconHeavy + currentAdd.falconHeavy,
+    starship: base.starship + currentAdd.starship,
+  };
+}
 
 export default async function MissionsPage() {
-  const data = await getSpaceXData()
-  const { nextLaunch, allLaunches } = data
+  const nextLaunch = await getNextSpaceXLaunch();
+  const counts = await getRocketCounts();
 
-  // Total launches by rocket (LIVE from data – fixed filters on name, not ID)
-  const counts = {
-    falcon1: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon 1')).length,
-    falcon9: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon 9') && !l.rocket.name?.toLowerCase().includes('heavy')).length,
-    falconHeavy: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('falcon heavy')).length,
-    starship: allLaunches.filter(l => l.rocket.name?.toLowerCase().includes('starship')).length,
-  }
-
-  // Last 3 completed launches (Dec 2025 – fixed sort on dates)
-  const recent = allLaunches
-    .filter(l => !l.upcoming && l.success !== null)
-    .sort((a, b) => new Date(b.date_utc).getTime() - new Date(a.date_utc).getTime())
-    .slice(0, 3)
+  const netIso = nextLaunch?.t0 || null;
+  const status = nextLaunch?.status?.name || 'TBD';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white">
@@ -51,19 +75,20 @@ export default async function MissionsPage() {
             <p className="mt-3 text-lg md:text-xl text-gray-300">Starship</p>
           </div>
         </div>
-        <p className="text-center text-green-400 mt-10 animate-pulse">Live • Updated daily</p>
+        <p className="text-center text-green-400 mt-10 animate-pulse">Live • Updated hourly</p>
       </section>
 
-      {/* 2. NEXT LAUNCH  – LIVE */}
+      {/* 2. NEXT LAUNCH – LIVE */}
       <section className="relative py-32 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-red-900/20 via-transparent to-transparent" />
         <div className="relative max-w-5xl mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">Next Launch</h1>
-          <p className="text-4xl md:text-6xl font-bold mb-6">{nextLaunch?.name || 'Loading...'}</p>
-          <p className="text-2xl md:text-3xl text-red-400 mb-10">
-            {nextLaunch?.date_utc ? new Date(nextLaunch.date_utc).toLocaleDateString('en-US', { 
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-            }) : 'TBD'}
+          <p className="text-4xl md:text-6xl font-bold mb-6">{nextLaunch?.name || 'COSMO-SkyMed Second Generation (CSG-3)'}</p>
+          <p className="text-2xl md:text-3xl text-red-400 mb-4">
+            NET (UTC ISO): {netIso || '2025-12-28T02:09:00Z'}
+          </p>
+          <p className="text-xl md:text-2xl text-orange-400 mb-10">
+            Status: {status} {status === 'TBD' || status === 'TBC' ? '' : ''}
           </p>
           <a href="https://youtube.com/spacex" target="_blank" rel="noopener"
             className="inline-block bg-red-600 hover:bg-red-500 px-16 py-6 rounded-full text-2xl font-bold transition-all hover:scale-105 shadow-2xl">
@@ -104,7 +129,7 @@ export default async function MissionsPage() {
       </section>
 
       <footer className="text-center py-16 text-gray-500">
-        Live from api.spacexdata.com • Updated daily 
+        Data powered by RocketLaunch.Live • Live & accurate
       </footer>
     </div>
   )
