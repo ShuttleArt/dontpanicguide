@@ -56,7 +56,7 @@ export default function RootLayout({
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-zinc-950 py-12 text-center text-sm opacity-60 mt-20 border-t border-zinc-800">
+        <footer className="bg-zinc-950 py-12 text-center text-red-500 opacity-60 mt-20 border-t border-zinc-800">
           <p>
             Indie craft • Data from api.spacexdata.com • {new Date().getFullYear()} •{' '}
             <span className="text-red-500">↑ ↑ ↓ ↓ ← → ← → B A</span>

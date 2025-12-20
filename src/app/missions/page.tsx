@@ -51,7 +51,7 @@ export default async function MissionsPage() {
             <p className="mt-3 text-lg md:text-xl text-gray-300">Starship</p>
           </div>
         </div>
-        <p className="text-center text-green-400 mt-10 animate-pulse">Live • Updated every 5 minutes</p>
+        <p className="text-center text-green-400 mt-10 animate-pulse">Live • Updated daily</p>
       </section>
 
       {/* 2. NEXT LAUNCH  – LIVE */}
@@ -104,7 +104,7 @@ export default async function MissionsPage() {
       </section>
 
       <footer className="text-center py-16 text-gray-500">
-        Live from api.spacexdata.com • Updated daily • Don't Panic.
+        Live from api.spacexdata.com • Updated daily 
       </footer>
     </div>
   )
