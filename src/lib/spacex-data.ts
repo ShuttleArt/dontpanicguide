@@ -1,7 +1,5 @@
 // src/lib/space-data.ts
 
-import { NextFetchRequestConfig } from 'next/server';
-
 export interface SpaceXData {
   launchesByYear: Record<number, number>;
   payloadByYear: Record<number, number>; // tons, rounded estimate
@@ -9,8 +7,6 @@ export interface SpaceXData {
   totalLaunches: number;
   maxReuses: number;
 }
-
-const revalidateConfig: NextFetchRequestConfig = { revalidate: 3600 }; // Hourly for any future fetches
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -28,14 +24,14 @@ const HISTORICAL_PAYLOAD: Record<number, number> = {
 const HISTORICAL_TOTAL_UP_TO_2024 = 428; // Pre-2025 successful
 
 export async function getSpaceXData(): Promise<SpaceXData> {
-  // Accurate Dec 23, 2025 – bump manually if more launches before Jan
+  // Accurate Dec 23, 2025 – manual bump monthly
   const currentYearLaunches = 165; // All Falcon 9
   const currentYearPayloadTons = 2700; // ~16t avg x 165
 
   const launchesByYear = { ...HISTORICAL_LAUNCHES, [CURRENT_YEAR]: currentYearLaunches };
   const payloadByYear = { ...HISTORICAL_PAYLOAD, [CURRENT_YEAR]: currentYearPayloadTons };
 
-  const starlinkSats = 9357; // Launched (9,347 working) – Dec 19 latest
+  const starlinkSats = 9357; // Launched – latest reliable
 
   const totalLaunches = HISTORICAL_TOTAL_UP_TO_2024 + currentYearLaunches;
 
